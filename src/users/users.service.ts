@@ -27,6 +27,9 @@ export class UsersService {
       id: randomUUID(),
       name: dto.name,
       email: dto.email,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: new Date(),
     };
 
     this.users.push(user);
