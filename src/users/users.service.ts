@@ -1,19 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { randomUUID } from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { DataSource, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  @InjectRepository(User)
+  private readonly userRepository: Repository<User>;
+  private readonly dataSource: DataSource;
 
-  findAll(): User[] {
-    return this.users;
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findOne(id: string): User {
-    const user = this.users.find((user) => user.id === id);
+  async findOne(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
 
     if (!user) {
       throw new NotFoundException(`User with ID "${id}" not found`);
@@ -22,41 +26,65 @@ export class UsersService {
     return user;
   }
 
-  create(dto: CreateUserDto): User {
-    const user: User = {
-      id: randomUUID(),
+  async findEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException(`User with email "${email}" not found`);
+    }
+
+    return user;
+  }
+
+  async create(dto: CreateUserDto): Promise<User> {
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    const user = this.userRepository.create({
+      password: hashedPassword,
       name: dto.name,
       email: dto.email,
       createdAt: new Date(),
       updatedAt: new Date(),
-      deletedAt: new Date(),
-    };
+    });
 
-    this.users.push(user);
-    return user;
+    const saveUser = await this.userRepository.save(user);
+
+    return saveUser;
   }
 
-  update(id: string, dto: UpdateUserDto): User {
-    const user = this.findOne(id);
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
 
-    if (dto.name !== undefined) {
-      user.name = dto.name;
-    }
-
-    if (dto.email !== undefined) {
-      user.email = dto.email;
-    }
-
-    return user;
-  }
-
-  remove(id: string) {
-    const idx = this.users.findIndex((user) => user.id === id);
-
-    if (idx === -1) {
+    if (!user) {
       throw new NotFoundException(`User with ID "${id}" not found`);
     }
 
-    this.users.splice(idx, 1);
+    this.userRepository.merge(user, {
+      name: dto.name ?? user.name,
+      email: dto.email ?? user.email,
+    });
+
+    return this.userRepository.save(user);
+  }
+
+  async remove(id: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID "${id}" not found`);
+    }
+
+    await this.userRepository.remove(user);
+  }
+
+  async softRemove(id: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID "${id}" not found`);
+    }
+
+    user.deletedAt = new Date();
+    await this.userRepository.save(user);
   }
 }

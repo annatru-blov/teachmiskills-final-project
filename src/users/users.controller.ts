@@ -26,6 +26,11 @@ export class UsersController {
     return this.users.findOne(id);
   }
 
+  @Get(':email')
+  findEmail(@Param('email') email: string) {
+    return this.users.findEmail(email);
+  }
+
   @Post()
   @HttpCode(201)
   create(@Body() dto: CreateUserDto) {
@@ -41,5 +46,11 @@ export class UsersController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.users.remove(id);
+  }
+
+  @Patch(':id/soft-remove')
+  @HttpCode(204)
+  softRemove(@Param('id') id: string) {
+    return this.users.softRemove(id);
   }
 }
