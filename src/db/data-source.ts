@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { User } from '../users/user.entity';
 import { DataSource } from 'typeorm';
+import { Event } from '../events/event.entity';
 
 const base = {
   type: 'postgres' as const,
@@ -13,7 +14,7 @@ const base = {
 
 export default new DataSource({
   ...base,
-  entities: [User],
+  entities: [User, Event],
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
 });

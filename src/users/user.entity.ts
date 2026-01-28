@@ -4,9 +4,11 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Event } from '../events/event.entity';
 
 @Entity('users')
 export class User {
@@ -22,6 +24,9 @@ export class User {
   @Column()
   @Index({ unique: true })
   email: string;
+
+  @OneToMany(()=> Event, (event) => event.author)
+  events: Event[];
 
   @CreateDateColumn()
   createdAt: Date;

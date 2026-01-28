@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
 import dbConfig from './config/db.config';
 
 @Module({
@@ -23,6 +24,7 @@ import dbConfig from './config/db.config';
     }),
     UsersModule,
     AuthModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

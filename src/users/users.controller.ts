@@ -7,18 +7,15 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly users: UsersService) {}
   
-  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.users.findAll();

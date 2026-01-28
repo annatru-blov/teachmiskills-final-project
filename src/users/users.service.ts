@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -10,7 +10,6 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   @InjectRepository(User)
   private readonly userRepository: Repository<User>;
-  private readonly dataSource: DataSource;
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
