@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Event } from '../events/event.entity';
+import { Subscription } from '../subscriptions/subscriptions.entity';
 
 @Entity('users')
 export class User {
@@ -27,6 +28,9 @@ export class User {
 
   @OneToMany(()=> Event, (event) => event.author)
   events: Event[];
+
+  @OneToMany(() => Subscription, (subscription) => subscription.user)
+  subscriptions: Subscription[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { EventStatus } from './common/event-status.enum';
 import { User } from '../users/user.entity';
+import { Subscription } from '../subscriptions/subscriptions.entity';
 
 @Entity('events')
 export class Event {
@@ -27,6 +29,9 @@ export class Event {
   @ManyToOne(() => User, (user) => user.events)
   @JoinColumn({ name: 'authorId' })
   author: User;
+
+  @OneToMany(() => Subscription, (subscription) => subscription.event)
+  subscriptions: Subscription[];
 
   @Column()
   authorId: string;
