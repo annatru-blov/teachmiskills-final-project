@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -27,5 +28,11 @@ export class EventsController {
   create(@Req() req, @Body() dto: CreateEventDto) {
     const userId = req.user.sub;
     return this.events.create(userId, dto);
+  }
+
+  @Post(':id/publish')
+  @HttpCode(201)
+  publish(@Param('id') eventId: string) {
+    return this.events.publishedEvent(eventId);
   }
 }

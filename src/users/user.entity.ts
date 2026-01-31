@@ -26,7 +26,7 @@ export class User {
   @Index({ unique: true })
   email: string;
 
-  @OneToMany(()=> Event, (event) => event.author)
+  @OneToMany(() => Event, (event) => event.author)
   events: Event[];
 
   @OneToMany(() => Subscription, (subscription) => subscription.user)

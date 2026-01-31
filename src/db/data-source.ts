@@ -3,6 +3,7 @@ import { User } from '../users/user.entity';
 import { DataSource } from 'typeorm';
 import { Event } from '../events/event.entity';
 import { Subscription } from '../subscriptions/subscriptions.entity';
+import { Notification } from '../notifications/notification.entity';
 
 const base = {
   type: 'postgres' as const,
@@ -15,7 +16,7 @@ const base = {
 
 export default new DataSource({
   ...base,
-  entities: [User, Event, Subscription],
+  entities: [User, Event, Subscription, Notification],
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false,
 });

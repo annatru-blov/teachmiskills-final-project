@@ -7,10 +7,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import dbConfig from './config/db.config';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
     ConfigModule.forRoot({ isGlobal: true, load: [dbConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -27,6 +35,7 @@ import dbConfig from './config/db.config';
     AuthModule,
     EventsModule,
     SubscriptionsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
