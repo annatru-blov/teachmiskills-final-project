@@ -10,6 +10,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import dbConfig from './config/db.config';
 import { BullModule } from '@nestjs/bullmq';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { BullModule } from '@nestjs/bullmq';
     EventsModule,
     SubscriptionsModule,
     NotificationsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

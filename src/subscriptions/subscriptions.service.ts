@@ -8,6 +8,13 @@ export class SubscriptionsService {
   @InjectRepository(Subscription)
   private subscriptionsRepository: Repository<Subscription>;
 
+  async findByEventId(eventId: string) {
+    return this.subscriptionsRepository.find({
+      where: { event: { id: eventId } },
+      relations: ['event'],
+    });
+  }
+
   async create(userId: string, eventId: string): Promise<Subscription> {
     const subscription = this.subscriptionsRepository.create({
       user: { id: userId },

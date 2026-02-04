@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Event } from '../events/event.entity';
 import { Subscription } from '../subscriptions/subscriptions.entity';
+import { UserRole } from 'src/src/users/enums/user-role.enum';
 
 @Entity('users')
 export class User {
@@ -25,6 +26,13 @@ export class User {
   @Column()
   @Index({ unique: true })
   email: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
 
   @OneToMany(() => Event, (event) => event.author)
   events: Event[];

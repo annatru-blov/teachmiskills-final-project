@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Post,
   Req,
@@ -14,6 +15,11 @@ import { AuthGuard } from '../common/guards/auth.guard';
 @Controller('subscriptions')
 export class SubscriptionsController {
   constructor(private readonly subscriptions: SubscriptionsService) {}
+
+  @Get()
+  getByEventId(@Body('eventId') eventId: string) {
+    return this.subscriptions.findByEventId(eventId);
+  }
 
   @HttpCode(201)
   @Post()

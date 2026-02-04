@@ -44,7 +44,6 @@ export class EventsService {
     });
 
     const subscriberIds = subscribers.map((subscriber) => subscriber.user.id);
-    console.log(subscriberIds);
 
     if (!event) {
       throw new NotFoundException(`Event with ID "${eventId}" not found`);
