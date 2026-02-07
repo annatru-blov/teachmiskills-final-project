@@ -11,7 +11,7 @@ export class SubscriptionsService {
   async findByEventId(eventId: string) {
     return this.subscriptionsRepository.find({
       where: { event: { id: eventId } },
-      relations: ['event'],
+      relations: ['event', 'user'],
     });
   }
 

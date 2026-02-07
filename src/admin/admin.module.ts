@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Event } from 'src/src/events/event.entity';
-import { Subscription } from 'src/src/subscriptions/subscriptions.entity';
-import { User } from 'src/src/users/user.entity';
-import { Notification } from 'src/src/notifications/notification.entity';
+import { User } from '../users/user.entity';
+import { Subscription } from '../subscriptions/subscriptions.entity';
+import { Event } from '../events/event.entity';
+import { Notification } from '../notifications/notification.entity';
 
 @Module({
   imports: [

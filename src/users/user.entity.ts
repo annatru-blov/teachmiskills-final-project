@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Event } from '../events/event.entity';
 import { Subscription } from '../subscriptions/subscriptions.entity';
-import { UserRole } from 'src/src/users/enums/user-role.enum';
+import { UserRole } from './enums/user-role.enum';
 
 @Entity('users')
 export class User {

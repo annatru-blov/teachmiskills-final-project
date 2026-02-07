@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/src/users/user.entity';
-import { Event } from 'src/src/events/event.entity';
-import { Subscription } from 'src/src/subscriptions/subscriptions.entity';
-import { Notification } from 'src/src/notifications/notification.entity';
-import { NotificationStatus } from 'src/src/notifications/common/notification-status';
-import { UserRole } from 'src/src/users/enums/user-role.enum';
+import { UserRole } from '../users/enums/user-role.enum';
+import { NotificationStatus } from '../notifications/common/notification-status';
+import { User } from '../users/user.entity';
+import { Subscription } from '../subscriptions/subscriptions.entity';
+import { Event } from '../events/event.entity';
+import { Notification } from '../notifications/notification.entity';
 
 @Injectable()
 export class AdminService {

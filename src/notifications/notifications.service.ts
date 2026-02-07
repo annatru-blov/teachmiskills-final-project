@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Notification } from 'src/src/notifications/notification.entity';
-import { NotificationStatus } from 'src/src/notifications/common/notification-status';
+import { Notification } from './notification.entity';
+import { NotificationStatus } from './common/notification-status';
 
 @Injectable()
 export class NotificationsService {
@@ -12,10 +12,20 @@ export class NotificationsService {
   ) {}
 
   async send(userId: string, eventId: string) {
-    await this.notificationRepository.save({
+    const notification = await this.notificationRepository.findOne({
+      where: { userId, eventId },
+    });
+
+    if (notification) {
+      throw new BadRequestException('Notification already sent');
+    }
+
+    const newNotification = await this.notificationRepository.save({
       userId,
       eventId,
       status: NotificationStatus.SENT,
     });
+
+    return newNotification;
   }
 }

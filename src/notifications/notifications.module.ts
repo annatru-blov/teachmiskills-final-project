@@ -5,7 +5,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { NotificationProcessor } from './notificaton.processor';
 import { Notification } from './notification.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SubscriptionsModule } from 'src/src/subscriptions/subscriptions.module';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 
 @Module({
   imports: [

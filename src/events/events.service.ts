@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Event } from './event.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,11 +53,36 @@ export class EventsService {
       throw new NotFoundException(`Event with ID "${eventId}" not found`);
     }
 
+    if (event.status === EventStatus.PUBLISHED) {
+      throw new NotFoundException(
+        `Event with ID "${eventId}" is already published`,
+      );
+    }
+
     event.status = EventStatus.PUBLISHED;
     await this.eventsRepository.save(event);
 
     for (const userId of subscriberIds) {
       await this.notificationQueue.add('eventPublished', { eventId, userId });
     }
+  }
+
+  async deletePublishedEvent(eventId: string): Promise<Event> {
+    const event = await this.eventsRepository.findOne({
+      where: { id: eventId },
+    });
+
+    if (!event) {
+      throw new NotFoundException(`Event with ID "${eventId}" not found`);
+    }
+
+    if (event.status !== EventStatus.PUBLISHED) {
+      throw new BadRequestException(
+        `Event with ID "${eventId}" is not published`,
+      );
+    }
+
+    event.status = EventStatus.CANCELLED;
+    return this.eventsRepository.save(event);
   }
 }
