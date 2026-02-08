@@ -11,9 +11,11 @@ import { NotificationsModule } from './notifications/notifications.module';
 import dbConfig from './config/db.config';
 import { BullModule } from '@nestjs/bullmq';
 import { AdminModule } from './admin/admin.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
+    CommonModule,
     BullModule.forRoot({
       connection: {
         host: 'localhost',
@@ -38,6 +40,7 @@ import { AdminModule } from './admin/admin.module';
     SubscriptionsModule,
     NotificationsModule,
     AdminModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
